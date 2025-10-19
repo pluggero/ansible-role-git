@@ -1,0 +1,77 @@
+{{ ansible_managed | comment }}
+{% if git_user_email or git_user_name or git_user_signing_key %}
+[user]
+{% if git_user_email %}
+        email = "{{ git_user_email }}"
+{% endif %}
+{% if git_user_name %}
+        name = "{{ git_user_name }}"
+{% endif %}
+{% if git_user_signing_key %}
+        signingKey = "{{ git_user_signing_key }}"
+{% endif %}
+{% endif %}
+[core]
+        autocrlf = {{ git_core_autocrlf | lower }}
+        editor = "{{ git_core_editor }}"
+        quotePath = {{ git_core_quote_path | lower }}
+
+[fetch]
+        fsckObjects = {{ git_fsck_objects | lower }}
+[receive]
+        fsckObjects = {{ git_fsck_objects | lower }}
+[transfer]
+        fsckObjects = {{ git_fsck_objects | lower }}
+
+[http]
+        sslVerify = {{ git_http_ssl_verify | lower }}
+
+[init]
+        defaultBranch = {{ git_init_default_branch }}
+[log]
+        showSignature = {{ git_log_show_signature | lower }}
+
+[merge]
+        ff = {{ git_merge_ff | lower }}
+        conflictStyle = {{ git_merge_conflict_style }}
+{% if git_merge_verify_signatures %}
+        verifySignatures = {{ git_merge_verify_signatures | lower }}
+{% endif %}
+[pull]
+        rebase = {{ git_pull_rebase | lower }}
+[push]
+        default = {{ git_push_default }}
+        followTags = {{ git_push_follow_tags | lower }}
+        autoSetupRemote = {{ git_push_auto_setup_remote | lower }}
+
+[safe]
+        bareRepository = {{ git_safe_bare_repository }}
+
+[protocol]
+        version = {{ git_protocol_version }}
+{% if git_gpg_sign_commits or git_gpg_sign_tags %}
+[gpg]
+        format = "{{ git_gpg_format }}"
+{% if git_gpg_program %}
+
+[gpg "{{ git_gpg_format }}"]
+        program = "{{ git_gpg_program }}"
+{% endif %}
+{% endif %}
+
+{% if git_force_https %}
+[url "https://"]
+        insteadOf = git://
+{% endif %}
+
+[ssh]
+        variant = {{ git_ssh_variant }}
+
+{% if git_gpg_sign_commits %}
+[commit]
+        gpgSign = {{ git_gpg_sign_commits | lower }}
+{% endif %}
+{% if git_gpg_sign_tags %}
+[tag]
+        gpgSign = {{ git_gpg_sign_tags | lower }}
+{% endif %}

@@ -1,0 +1,55 @@
+---
+git_install_method: "package"
+git_force_install: false
+
+git_config_dir: "{{ ansible_env.HOME }}/.config/git"
+git_config_file: "{{ git_config_dir }}/config"
+
+# User configuration
+git_user_name: ""
+git_user_email: ""
+git_user_signing_key: ""
+
+# GPG configuration
+git_gpg_sign_commits: false
+git_gpg_sign_tags: false
+git_gpg_format: "openpgp"
+git_gpg_program: "gpg"
+
+# Core configuration
+git_core_editor: "vim"
+git_core_autocrlf: false
+git_core_quote_path: false
+
+# Pull configuration
+git_pull_rebase: true
+
+# Init configuration
+git_init_default_branch: "main"
+
+# Push configuration
+git_push_default: "simple"
+git_push_follow_tags: true
+git_push_auto_setup_remote: false
+
+# Merge configuration
+git_merge_ff: false
+git_merge_conflict_style: "diff3"
+git_merge_verify_signatures: false
+
+# Protocol security
+git_protocol_version: 2
+git_force_https: true
+
+# SSH configuration
+git_ssh_variant: "ssh"
+
+# Security configuration
+git_fsck_objects: true
+git_safe_bare_repository: "explicit"
+
+# HTTP configuration
+git_http_ssl_verify: true
+
+# Log configuration
+git_log_show_signature: true

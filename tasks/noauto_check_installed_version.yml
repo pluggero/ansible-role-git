@@ -1,0 +1,20 @@
+---
+- name: Check installed git version
+  block:
+    - name: Get installed git version # noqa: command-instead-of-module
+      ansible.builtin.command:
+        cmd: "git --version"
+      environment:
+        PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+      ignore_errors: true
+      changed_when: false
+      failed_when: false
+      register: git_installed_version_cmd
+
+    - name: Extract only the version into a variable
+      ansible.builtin.set_fact:
+        git_installed_version: "{{ (git_installed_version_cmd.stdout | regex_search('.*?([\\d\\.]{2,})', '\\1'))[0] | default('') | regex_replace('\\.$', '') }}"
+
+    - name: Debug installed git version
+      ansible.builtin.debug:
+        var: git_installed_version
