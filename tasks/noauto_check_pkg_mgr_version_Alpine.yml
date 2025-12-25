@@ -1,0 +1,29 @@
+---
+- name: Ensure we are using apk
+  ansible.builtin.fail:
+    msg: "This role only supports {{ ansible_os_family }} systems that use apk as a package manager."
+  when: ansible_pkg_mgr != "apk"
+
+- name: Checks git version in package manager
+  block:
+    - name: Update apk cache
+      community.general.apk:
+        update_cache: true
+      changed_when: false # This is valid because we install packages without cache anyway
+      become: true
+
+    - name: Get git version from package manager
+      ansible.builtin.command:
+        cmd: "apk info {{ git_distro_pkgs[0] }}"
+      changed_when: false
+      failed_when: false
+      ignore_errors: true
+      register: git_pkg_mgr_version_cmd
+
+    - name: Extract only the version into a variable
+      ansible.builtin.set_fact:
+        git_pkg_mgr_version: "{{ (git_pkg_mgr_version_cmd.stdout | regex_search('git-([\\d\\.]+)', '\\1', multiline=True))[0] }}"
+
+    - name: Debug git version from package manager
+      ansible.builtin.debug:
+        var: git_pkg_mgr_version
